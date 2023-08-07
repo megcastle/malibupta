@@ -1,0 +1,18 @@
+name: Surfers
+type: theme
+description: 'Malibu PTA theme'
+core_version_requirement: ^8 || ^9
+libraries:
+  - surfers/global-styling
+  - surfers/global-scripts
+base theme: stable9
+version: VERSION
+regions:
+  nav: 'Nav'
+  search: 'Search'
+  header: 'Header'
+  messages: 'Messages'
+  breadcrumb: 'Breadcrumb'
+  content: 'Content'
+  featured: 'Featured'
+  footer: 'Footer'

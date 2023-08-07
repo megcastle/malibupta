@@ -1,0 +1,43 @@
+global-styling:
+  version: 1.x
+  css:
+    theme:
+      css/surfers.css: {}
+      css/bootstrap-grid.css: {}
+
+global-scripts:
+  version: 1.x
+  js:
+    js/checkbox.js: {}
+    js/nav-utils.js: {}
+    js/surfers.js: {}
+
+  dependencies:
+    - core/drupal.element.closest
+    - core/drupal.element.matches
+    - core/drupal.nodelist.foreach
+    - core/drupal
+    - core/once
+    - core/tabbable
+
+messages:
+  version: VERSION
+  js:
+    js/alert.js: {}
+  dependencies:
+    - core/drupal.array.includes
+
+navigation-primary:
+  version: VERSION
+  js:
+    js/navigation.js: {}
+    js/second-level-navigation.js: {}
+    js/nav-resize.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+search-wide:
+  version: VERSION
+  js:
+    js/search.js: {}

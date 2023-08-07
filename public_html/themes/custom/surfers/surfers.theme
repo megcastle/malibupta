@@ -1,0 +1,104 @@
+<?php
+
+/**
+ * @file
+ * Surfers theme file.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Render\Element;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_preprocess_HOOK() for block.html.twig.
+ */
+function surfers_preprocess_block(&$variables) {
+  if (!empty($variables['elements']['#id'])) {
+    /** @var \Drupal\block\BlockInterface $block */
+    $block = \Drupal::entityTypeManager()
+      ->getStorage('block')
+      ->load($variables['elements']['#id']);
+    if ($block) {
+      $region = $block->getRegion();
+
+      if ($variables['base_plugin_id'] === 'system_menu_block') {
+        $variables['content']['#attributes']['region'] = $region;
+      }
+
+      if ($variables['base_plugin_id'] === 'search_form_block') {
+        if ($region === 'nav') {
+          $variables['content']['actions']['submit']['#theme_wrappers'] = ['input__submit__header_search'];
+        }
+        elseif ($region === 'search') {
+          $variables['content']['actions']['submit']['#theme_wrappers'] = ['input__submit__header_search'];
+        }
+      }
+    }
+  }
+
+  if ($variables['base_plugin_id'] === 'page_title_block') {
+    $path = \Drupal::service('path.current')->getPath();
+    $variables['alias'] = \Drupal::service('path_alias.manager')->getAliasByPath($path);
+  }
+}
+
+
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for form templates.
+ */
+function surfers_theme_suggestions_form_alter(array &$suggestions, array $variables) {
+  if ($variables['element']['#form_id'] === 'search_block_form') {
+    $suggestions[] = 'form__search_block_form';
+  }
+
+  if ($variables['element']['#form_id'] === 'user_login_form') {
+    $suggestions[] = 'form__user_login_form';
+  }
+}
+
+
+
+
+/**
+ * Implements hook_form_alter() for adding classes and placeholder text to the search forms.
+ */
+function surfers_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  switch ($form_id) {
+    case 'search_block_form':
+
+      $form['keys']['#attributes']['placeholder'] = t('Search...');
+      $form['actions']['submit']['#attributes']['class'][] = 'search-form__submit';
+      break;
+
+    case 'search_form':
+      $form['basic']['keys']['#attributes']['placeholder'] = t('Search...');
+      break;
+
+    case 'user_login_form':
+      $form['name']['#attributes']['placeholder'] = t('Username');
+      $form['pass']['#attributes']['placeholder'] = t('Password');
+      break;
+  }
+}
+
+
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for views view grid templates.
+ */
+function surfers_theme_suggestions_views_view_grid_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'views_view_grid__' . $variables['view']->id();
+}
+
+
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for views view fields templates.
+ */
+function surfers_theme_suggestions_views_view_fields_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'views_view_fields__' . $variables['view']->id();
+}
